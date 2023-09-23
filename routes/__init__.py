@@ -4,3 +4,4 @@ app = Flask(__name__)
 
 
 import routes.railway
+import routes.test2
