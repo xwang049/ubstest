@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 def schedule_lessons(lesson_requests):
     # Sort lesson requests by potential earnings per hour (earnings/duration)
+    lesson_requests = [request for request in lesson_requests if request['duration'] > 0]
     lesson_requests.sort(key=lambda x: x['potentialEarnings'] / x['duration'], reverse=True)
     
     schedule = {}
