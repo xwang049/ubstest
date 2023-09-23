@@ -1,73 +1,108 @@
-# from flask import Flask, request
+from flask import Flask, request
 
-# app = Flask(__name__)
-# import json
-
-# # Helper function to evaluate conditions
-# # def evaluate_condition(a, operator, b):
-# #     if operator == '==':
-# #         return a == b
-# #     elif operator == '!=':
-# #         return a != b
-# #     elif operator == '>':
-# #         return a > b
-# #     elif operator == '<':
-# #         return a < b
-# #     else:
-# #         return False
-
-# # # Helper function to perform arithmetic operations
-# # def perform_operation(a, operator, b):
-# #     if operator == '+':
-# #         return a + b
-# #     elif operator == '-':
-# #         return a - b
-# #     elif operator == '*':
-# #         return a * b
-# #     elif operator == '/':
-# #         if b != 0:
-# #             return a // b  # Floor division (integer division)
-# #         else:
-# #             return None  # Division by zero
-
-# # # Helper function to execute the SwissByte code
-# # def execute_swissbyte_code(code, initial_variables):
-# #     variables = initial_variables.copy()
-# #     i = 0
-# #     while i < len(code):
-# #         line = code[i].split()
-# #         if line[0] == 'if':
-# #             condition = evaluate_condition(variables[line[1]], line[2], variables[line[3]])
-# #             if not condition:
-# #                 # Skip to the corresponding 'endif'
-# #                 while i < len(code) and code[i] != 'endif':
-# #                     i += 1
-# #         elif line[0] == 'fail':
-# #             # The program encountered a 'fail' statement
-# #             return False, variables
-# #         elif line[1] == '=':
-# #             variables[line[0]] = perform_operation(variables[line[2]], line[3], variables[line[4]])
-# #         i += 1
-# #     return True, variables
-
-# @app.route('/swissbyte', methods=['POST'])
-# def swissbyte():
-#     data = request.get_json()
-#     code = data['code']
-#     # cases = data['cases']
-#     # outcomes = []
-
-#     # for case in cases:
-#     #     is_solvable, final_variables = execute_swissbyte_code(code, case)
-#     #     outcome = {
-#     #         'is_solvable': is_solvable,
-#     #         'variables': final_variables
-#     #     }
-#     #     outcomes.append(outcome)
-
-#     # response_data = {
-#     #     'outcomes': outcomes
-#     # }
+app = Flask(__name__)
+import json
+import logging
 
 
-#     return json.dumps(code)
+from routes import app
+# Helper function to evaluate conditions
+def evaluate_condition(left, operator, right, variables):
+    try:
+        left_val = int(left)
+    except ValueError:
+        left_val = variables.get(left, 0)  # Use 0 if not found in variables
+    
+    try:
+        right_val = int(right)
+    except ValueError:
+        right_val = variables.get(right, 0)  # Use 0 if not found in variables
+    
+    if operator == "==":
+        return left_val == right_val
+    elif operator == "!=":
+        return left_val != right_val
+    elif operator == ">":
+        return left_val > right_val
+    elif operator == "<":
+        return left_val < right_val
+    
+    return False
+
+
+def perform_operation(target, operator, operand, variables):
+    operand_val = variables.get(operand, int(operand))
+    
+    if operator == "+":
+        variables[target] += operand_val
+    elif operator == "-":
+        variables[target] -= operand_val
+    elif operator == "*":
+        variables[target] *= operand_val
+    elif operator == "/":
+        variables[target] //= operand_val
+
+def handle_operation(statement, variables):
+    parts = statement.split()
+    target = parts[0]
+    operator = parts[3]
+    operand = parts[4]
+    
+    perform_operation(target, operator, operand, variables)
+
+# Modify the swissbyte function
+def swissbyte(code, cases):
+    outcomes = []
+    
+    for case in cases:
+        variables = case.copy()
+        is_solvable = True
+        i = 0
+        
+        while i < len(code):
+            line = code[i]
+            parts = line.split()
+            
+            if parts[0] == "if":
+                condition = parts[1]
+                if not evaluate_condition(condition, parts[2], parts[3], variables):
+                    # Skip to endif
+                    level = 1
+                    while level > 0:
+                        i += 1
+                        if code[i] == "if":
+                            level += 1
+                        elif code[i] == "endif":
+                            level -= 1
+            elif parts[0] == "endif":
+                pass  # End of if block, continue to the next line
+            elif parts[0] == "fail":
+                is_solvable = False
+                break
+            elif len(parts) == 3:  # Assignment
+                target = parts[0]
+                operator = parts[1]
+                operand = parts[2]
+                
+                if operator == "=":
+                    variables[target] = variables.get(operand, int(operand))
+            elif len(parts) == 5:  # Operation
+                handle_operation(line, variables)
+            
+            i += 1  # Move to the next line
+        
+        outcome = {"is_solvable": is_solvable, "variables": variables}
+        outcomes.append(outcome)
+    
+    return {"outcomes": outcomes}
+
+
+@app.route('/swissbyte', methods=['POST'])
+def swissbyteRun():
+    data = request.get_json()
+    code = data.get("code")
+    cases = data.get("cases")
+    res = swissbyte(code,cases)
+    return json.dumps(res)
+
+
