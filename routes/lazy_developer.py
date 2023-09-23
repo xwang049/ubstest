@@ -1,4 +1,6 @@
 from typing import Dict, List
+
+
 def getNextProbableWords(classes: List[Dict],
                          statements: List[str]) -> Dict[str, List[str]]:
   # Fill in your solution here and return the correct output based on the given input
@@ -18,6 +20,7 @@ def findTargetInSea(search, Sea):
   # print("searchToList", searchToList)
   lenOfSearch = len(searchToList)
   i = 1
+  # print('findTargetInSea',search)
   # todo: the following line needs to be modified accordingly when the 
   while i <= lenOfSearch - 1:
     # level start with 0
@@ -54,7 +57,9 @@ def findKeysInClasses(targetKey,Sea,level):
       primeKeysInClasses.extend(key)
     if targetKey in primeKeysInClasses:
       flag = True
-      keysInClasses = Sea[primeKeysInClasses.index(targetKey)][targetKey]
+      # print('cpt1',len(Sea),primeKeysInClasses.index(targetKey))
+      # print('Sea',Sea)
+      keysInClasses = Sea[0][targetKey]
     if keysInClasses == "":
       keysInClasses = [""]
   return [flag,keysInClasses]
@@ -70,3 +75,58 @@ def findSorted_Most5Item(resultBeforeSorted):
     if resultAfterSorted == []:
       return [""]
     return resultAfterSorted
+input = {
+   "classes": [
+      {
+         "Order": {
+            "orderId": "String",
+            "version": "Long",
+            "orderType": "OrderType",
+            "orderSide": "OrderSide",
+            "status": "Status",
+            "allocations": "List<Allocation>"
+         },
+         "OrderType": [
+            "MarketOrderType",
+            "LimitOrderType"
+         ],
+         "MarketOrderType": "",
+         "LimitOrderType": {
+            "price": "Double"
+         },
+         "OrderSide": [
+            "Buy",
+            "Sell"
+         ],
+         "Status": [
+            "New",
+            "Verifying",
+            "Pending",
+            "Working",
+            "PartiallyFilled",
+            "Filled",
+            "Cancelled"
+         ],
+         "Allocation": [
+            "LongAllocation",
+            "EmptyAllocation"
+         ],
+         "LongAllocation": {
+            "clientName": "String"
+         },
+         "EmptyAllocation": ""
+      }
+   ],
+   "statements": [
+      "Order.",
+      "Order.order",
+      "Order.allocations.",
+      "Status.P",
+      "MarketOrderType."
+   ]
+}
+classes = input["classes"]
+statements = input["statements"]
+
+# return classes
+getNextProbableWords(classes=classes,statements=statements)
