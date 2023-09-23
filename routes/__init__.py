@@ -5,3 +5,4 @@ app = Flask(__name__)
 
 import routes.railway
 import routes.monkey
+import routes.swissbyte
