@@ -2,7 +2,7 @@ import json
 import logging
 
 from flask import request
-
+from flask import Response
 from routes import app
 
 logger = logging.getLogger(__name__)
@@ -48,4 +48,4 @@ def calendar():
     for day, lessons in result["schedule"].items():
         if lessons:
             output[day] = lessons
-    return json.dumps(output)
+    return Response(json.dumps(output))
