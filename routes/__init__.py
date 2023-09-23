@@ -8,5 +8,5 @@ import routes.monkey
 import routes.swissbyte
 import routes.calendar
 import routes.chinesewall
-import routes.bikes
+# import routes.bikes
 import routes.pie
