@@ -4,10 +4,9 @@ import logging
 from flask import request
 
 from routes import app
-from routes import lazy_developer
 
 logger = logging.getLogger(__name__)
-
+from routes import GreedyMonkey
 
 @app.route('/greedymonkey', methods=['GET','POST'])
 def greedymonkey():
@@ -16,7 +15,7 @@ def greedymonkey():
     v = data.get("v")
     f = data.get("f")
 
-    return 0
+    return json.dumps(GreedyMonkey.greedyM(w,v,f))
 
 
 
