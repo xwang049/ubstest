@@ -2,8 +2,10 @@ import json
 import logging
 
 from flask import request
+from flask import Response
 
 from routes import app
+
 
 logger = logging.getLogger(__name__)
 from routes import GreedyMonkey
@@ -15,8 +17,8 @@ def greedymonkey():
     w = data.get("w")
     v = data.get("v")
     f = data.get("f")
-
-    return json.dumps(GreedyMonkey.greedyM(w,v,f))
+    return Response(json.dumps(int(GreedyMonkey.greedyM(w,v,f))), mimetype='text/plain')
+    # return json.dumps(GreedyMonkey.greedyM(w,v,f))
 
 
 
