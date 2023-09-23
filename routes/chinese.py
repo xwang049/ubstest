@@ -10,7 +10,7 @@ def work():
                 "2": "galactic",
                 "3": "mangoes",
                 "4": "subatomic",
-                "5": "party"
+                "5": "goat"
             }
 
 
