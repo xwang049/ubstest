@@ -7,16 +7,16 @@ import logging
 
 from routes import app
 # Helper function to evaluate conditions
-def get_variable_value(variable, variables):
-    try:
-        return int(variable)
-    except ValueError:
-        return variables.get(variable, 0)
-
-
 def evaluate_condition(left, operator, right, variables):
-    left_val = get_variable_value(left, variables)
-    right_val = get_variable_value(right, variables)
+    try:
+        left_val = int(left)
+    except ValueError:
+        left_val = variables.get(left, 0)  # Use 0 if not found in variables
+    
+    try:
+        right_val = int(right)
+    except ValueError:
+        right_val = variables.get(right, 0)  # Use 0 if not found in variables
     
     if operator == "==":
         return left_val == right_val
@@ -31,9 +31,11 @@ def evaluate_condition(left, operator, right, variables):
 
 
 def perform_operation(target, operator, operand, variables, int1):
-    operand_val = get_variable_value(operand, variables)
-    if operator =='/' and operand_val==0:
-        return False 
+    try:
+        operand_val = int(operand)
+    except ValueError:
+        operand_val = variables.get(operand, 0)  # Use 0 if not found in variables
+    
     if operator == "+":
         variables[target] = int1 + operand_val
     elif operator == "-":
@@ -43,17 +45,21 @@ def perform_operation(target, operator, operand, variables, int1):
     elif operator == "/":
         variables[target] = int1 // operand_val
 
-
 def handle_operation(statement, variables):
     parts = statement.split()
     target = parts[0]
-    int1 = get_variable_value(parts[2], variables)
+    int1 = parts[2]
     operator = parts[3]
     operand = parts[4]
 
-    perform_operation(target, operator, operand, variables, int1)
+    try:
+        int1_val = int(int1)
+    except ValueError:
+        int1_val = variables.get(int1, 0)  # Use 0 if not found in variables
 
+    perform_operation(target, operator, operand, variables, int1_val)
 
+# Modify the swissbyte function
 def swissbyte(code, cases):
     outcomes = []
 
@@ -88,12 +94,13 @@ def swissbyte(code, cases):
                 operand = parts[2]
 
                 if operator == "=":
-                    operand_val = get_variable_value(operand, variables)
+                    try:
+                        operand_val = int(operand)
+                    except ValueError:
+                        operand_val = variables.get(operand, 0)  # Use 0 if not found in variables
+
                     variables[target] = operand_val
             elif len(parts) == 5:  # Operation
-                if not perform_operation(parts[0], parts[3], parts[4], variables, get_variable_value(parts[2], variables)):
-                    is_solvable = False
-                    break
                 handle_operation(line, variables)
 
             i += 1  # Move to the next line
