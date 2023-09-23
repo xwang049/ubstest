@@ -151,9 +151,9 @@ def piePart1(data):
     result = sorted(result, reverse=True)
     for i in range(len(result)):
         if i != 0:
-            result[i] = round(float(result[i]) + float(result[i-1]), 7)
+            result[i] = round(float(result[i]) + float(result[i-1]), 8)
         else:
-            result[i] = round(float(result[i]), 7)
+            result[i] = round(float(result[i]), 8)
     result.insert(0, 0.0)
 
     return {"instruments":result}
