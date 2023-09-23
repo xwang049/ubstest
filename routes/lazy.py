@@ -4,7 +4,7 @@ import logging
 from flask import request
 
 from routes import app
-from routes import lazy_developer1
+from routes import lazy_developer
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ def hi():
     classes = data.get("classes")
     statements = data.get("statements")
     # return classes
-    return lazy_developer1.getNextProbableWords(classes=classes,
+    return lazy_developer.getNextProbableWords(classes=classes,
                          statements=statements)
 
     # return json.dumps(data)
