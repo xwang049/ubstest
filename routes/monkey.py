@@ -17,7 +17,7 @@ def greedymonkey():
     w = data.get("w")
     v = data.get("v")
     f = data.get("f")
-    return Response(json.dumps(GreedyMonkey.greedyM(w,v,f)), mimetype='text/plain')
+    return Response(json.dumps(int(GreedyMonkey.greedyM(w,v,f))), mimetype='text/plain')
     # return json.dumps(GreedyMonkey.greedyM(w,v,f))
 
 
