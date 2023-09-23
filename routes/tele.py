@@ -2,8 +2,8 @@ import json
 import logging
 from flask import request
 from routes import app
-import math
 
+import math
 def tele(input_dict):
     ports = input_data["p"]
     m = len(ports)
@@ -18,13 +18,13 @@ def tele(input_dict):
         else:
             st[i] = math.sqrt(stations[i][0] * stations[i][0] + stations[i][1] * stations[i][1])
         for j in range(m):
-            dist = math.sqrt((stations[i][0] - ports[i][0]) * (stations[i][0] - ports[i][0]) + (stations[i][1] - ports[i][1]) * (stations[i][1] - ports[i][1]))
+            dist = math.sqrt((stations[i][0] - ports[j][0]) * (stations[i][0] - ports[j][0]) + (stations[i][1] - ports[j][1]) * (stations[i][1] - ports[j][1]))
             length[i] = min(length[i], dist)
-    dp = [0 for i in range(k)]
+    dp = [0 for i in range(k + 1)]
     for i in range(n):
-        for t in range(k - 1): 
+        for t in range(k): 
             dp[t] = min(dp[t] + st[i], dp[t + 1] + length[i])
-        dp[k - 1] = dp[k - 1] + st[i]
+        dp[k] = dp[k] + st[i]
     ans = 1000
     for t in range(k): 
         ans = min(ans, dp[t])
