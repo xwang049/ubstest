@@ -11,8 +11,8 @@ def wall():
     res = {
   "1": "Fluffy",
   "2": "Galactic",
-  "3": "password3",
-  "4": "password4",
-  "5": "password5"
+  "3": "mangoes",
+  "4": "Subatomic",
+  "5": "party"
 }
     return json.dumps(res)
