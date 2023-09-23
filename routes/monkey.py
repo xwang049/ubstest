@@ -32,11 +32,3 @@ def hi():
     # return json.dumps(data)
 
 
-@app.route('/railway-builder', methods=['GET','POST'])
-def railwayBuilder():
-    data = request.get_json()
-    w = data.get("w")
-    v = data.get("v")
-    f = data.get("f")
-
-    return json.dumps(GreedyMonkey.greedyM(w,v,f))
