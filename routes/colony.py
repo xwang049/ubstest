@@ -9,16 +9,12 @@ logger = logging.getLogger(__name__)
 
 
 @app.route('/digital-colony', methods=['GET','POST'])
-def colony():
+def colony1():
     data = request.get_json()
-    logging.info("data sent for evaluation {}".format(data))
-    input_value = data.get("input")
-    result = input_value * input_value
-    logging.info("My result :{}".format(result))
-    return json.dumps(input_value)
 
-
-
+    # input_value = data.get("input")
+    work(data)
+    return json.dumps(work(data))
 
 def colony(inputdict):
     ststr = inputdict['colony']
@@ -51,11 +47,11 @@ def work(inputlist):
     #print(ans)
     return ans
                 
-inputlist = [
-    { "generations": 10, "colony": "1000" },
-    { "generations": 50, "colony": "1000" },
-]
+# inputlist = [
+#     { "generations": 10, "colony": "1000" },
+#     { "generations": 50, "colony": "1000" },
+# ]
 
-work(inputlist)
+# work(inputlist)
 # dp[i][j] 相邻的cnt
 # 对于一个current sum， 末位转移
