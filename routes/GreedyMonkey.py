@@ -1,8 +1,6 @@
-import numpy as np
-
 def greedyM(w, v, flist):
     flen = len(flist)
-    dp = np.zeros((w + 1, v + 1), dtype=int)
+    dp = [[0 for i in range(v + 1)] for j in range(w + 1)]
     ans = 0
     for id in range(flen):
         for i in range(w, -1, -1):
