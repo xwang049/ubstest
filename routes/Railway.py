@@ -77,6 +77,7 @@ def Work(testlist):
     return ans
 
 # testlist = [
+    
 # "5, 3, 2, 1, 4",
 # "3, 3, 4, 1, 2",
 # "11, 1, 2"
@@ -88,5 +89,5 @@ def Work(testlist):
 @app.route('/railway-builder', methods=['GET','POST'])
 def railwayBuilder():
     data = request.get_json()
-    return json.dumps(data)
+    return json.dumps(Work(data))
 
