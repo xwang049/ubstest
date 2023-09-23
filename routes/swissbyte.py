@@ -7,7 +7,6 @@ import logging
 
 from routes import app
 # Helper function to evaluate conditions
-
 def get_variable_value(variable, variables):
     try:
         return int(variable)
@@ -33,7 +32,8 @@ def evaluate_condition(left, operator, right, variables):
 
 def perform_operation(target, operator, operand, variables, int1):
     operand_val = get_variable_value(operand, variables)
-    
+    if operator =='/' and operand_val==0:
+        return False 
     if operator == "+":
         variables[target] = int1 + operand_val
     elif operator == "-":
@@ -91,6 +91,9 @@ def swissbyte(code, cases):
                     operand_val = get_variable_value(operand, variables)
                     variables[target] = operand_val
             elif len(parts) == 5:  # Operation
+                if not perform_operation(parts[0], parts[3], parts[4], variables, get_variable_value(parts[2], variables)):
+                    is_solvable = False
+                    break
                 handle_operation(line, variables)
 
             i += 1  # Move to the next line
