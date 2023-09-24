@@ -130,20 +130,27 @@ def piePart1(data):
         if returnFracItem < 0.0005:
             numOfLess5 += 1
         returnFrac.append(returnFracItem)
+    while True:
+      if numOfLess5 > 0:
+          while True:
+            returnFracMoreThan5 = returnFrac[numOfLess5:]
+            sumsOfreturnFracMoreThan5 = sum(returnFracMoreThan5)
+            for i in range(len(returnFracMoreThan5)):
+                returnFracMoreThan5[i] = returnFracMoreThan5[i]/sumsOfreturnFracMoreThan5
 
-    if numOfLess5 > 0:
-
-        returnFracMoreThan5 = returnFrac[numOfLess5:]
-        sumsOfreturnFracMoreThan5 = sum(returnFracMoreThan5)
-        for i in range(len(returnFracMoreThan5)):
-            returnFracMoreThan5[i] = returnFracMoreThan5[i]/sumsOfreturnFracMoreThan5
-
-        restToFrac = 1 - 0.0005*numOfLess5
-        for i in range(len(amount)):
-            if i < numOfLess5:
-                returnFrac[i] = 0.0005
+            restToFrac = 1 - 0.0005*numOfLess5
+            for i in range(len(amount)):
+                if i < numOfLess5:
+                    returnFrac[i] = 0.0005
+                else:
+                    returnFrac[i] = restToFrac*returnFracMoreThan5[i-numOfLess5]
+            if any(x < 0.0005 for x in returnFrac):
+                continue
             else:
-                returnFrac[i] = restToFrac*returnFracMoreThan5[i-numOfLess5]
+                break
+      else:
+          break
+
     
     for i in returnFrac:
         returnAngle = 2*math.pi*i
@@ -161,4 +168,4 @@ def piePart1(data):
 def piePart2(data):
     return 0
 
-# print(piePart1(input3))
+# print(piePart1(input))
